@@ -1,3 +1,4 @@
+#include <Wire.h>
 #include "screen.h"
 #include "timer.h"
 #include "buttons.h"
@@ -6,24 +7,28 @@
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
-#define OLED_CLK 7//S2 1//C3
-#define OLED_MOSI 11//S2 4//C3
-#define OLED_RESET 5//S2 2//C3
-#define OLED_DC 18//S2 7//C3
-#define OLED_CS 12//S2 5//C3
-
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+#define OLED_RESET -1     // Reset pin (-1 if sharing Arduino reset)
+#define SCREEN_ADDRESS 0x3C
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 /* Initialize the screen */
 void setupScreen() {
-  if (!display.begin(SSD1306_SWITCHCAPVCC)) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for (;;);
+  Wire.begin(33, 35);  // Use default ESP32 I2C pins
+  Wire.setClock(400000);
+
+  // Initialize OLED
+  Serial.println("Attempting to initialize OLED...");
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+    Serial.println("ERROR: SSD1306 allocation failed! Check wiring and address.");
+    for (;;)
+      ;  // Stop execution
   }
+  
   display.clearDisplay();
 }
 
 void statusDisplay() {
+  Serial.println("Called!");
   display.clearDisplay();
   display.setTextColor(SSD1306_WHITE);
   display.setTextSize(2);
@@ -33,7 +38,7 @@ void statusDisplay() {
   display.setCursor(5, 28);
   String minSec;
   ellapsedTime(minSec);
-  display.println(minSec);
+  Serial.println("Called! x2");
   display.display();
   lastTime = millis();
 }
