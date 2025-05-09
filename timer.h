@@ -2,7 +2,6 @@
 #define TIMER_H
 
 #include <Arduino.h>
-#include "shared_variables.h"
 #include "PreferencesManager.h"
 
 extern unsigned long startTime;

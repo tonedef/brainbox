@@ -13,5 +13,5 @@ void setupScreen();
 void statusDisplay();
 void configsDisplay();
 void ellapsedTime(String &minSec);
-
+void configsDisplay();
 #endif // SCREEN_H

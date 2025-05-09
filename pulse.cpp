@@ -6,18 +6,25 @@
 
 #define AUDIO_TIMER LEDC_TIMER_0
 #define AUDIO_MODE LEDC_LOW_SPEED_MODE
-#define AUDIO_OUTPUT_IO 33 // S2 8 // C3
+#define AUDIO_OUTPUT_IO 3
+#define AUDIO_SD_IO 5
 #define AUDIO_CHANNEL LEDC_CHANNEL_0
 #define AUDIO_DUTY_RES LEDC_TIMER_13_BIT
 
 #define LED_TIMER LEDC_TIMER_1
 #define LED_MODE LEDC_LOW_SPEED_MODE
-#define LED_OUTPUT_IO 35 // S2 10 // C3
+#define LED_OUTPUT_IO 7
 #define LED_CHANNEL LEDC_CHANNEL_1
 #define LED_DUTY_RES LEDC_TIMER_13_BIT
 
 bool audio_initialized = false;
 bool led_initialized = false;
+
+void setupPulse() {
+  pinMode(AUDIO_SD_IO, OUTPUT);
+  digitalWrite(AUDIO_SD_IO, LOW);
+}
+
 
 /* Audio and LED Pulse initialization */
 void pulseInit(int pin, int duty, int frequency, ledc_timer_t timer, ledc_channel_t channel, ledc_mode_t mode, ledc_timer_bit_t res) {
@@ -65,7 +72,10 @@ void updateOutputs() {
     // Set duty and update duty for LED
     ESP_ERROR_CHECK(ledc_set_duty(LED_MODE, LED_CHANNEL, led_duty));
     ESP_ERROR_CHECK(ledc_update_duty(LED_MODE, LED_CHANNEL));
+    digitalWrite(AUDIO_SD_IO, HIGH);
   } else {
+    digitalWrite(AUDIO_SD_IO, LOW);
+
     if (audio_initialized) {
       ledc_stop(AUDIO_MODE, AUDIO_CHANNEL, 0);
       pinMode(AUDIO_OUTPUT_IO, INPUT);
@@ -81,11 +91,12 @@ void updateOutputs() {
     Serial.print("led_duty: ");
     Serial.println(led_duty);
     Serial.print("saved led_duty: ");
-    Serial.println(preferences.getInt("led_duty", DEFAULT_LED_DUTY));
+    Serial.println(preferences.getInt("led_duty", LED_DUTY));
 
     // Save the LED duty cycle if it's changed. Do on stop to save on writes
-    if (led_duty != preferences.getInt("led_duty", DEFAULT_LED_DUTY)) {
+    if (led_duty != preferences.getInt("led_duty", LED_DUTY)) {
       Serial.println("Saving!!");
+
       preferences.putInt("led_duty", led_duty);
     }
   }

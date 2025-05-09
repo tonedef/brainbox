@@ -26,7 +26,8 @@ void setup() {
   audio_duty = preferences.getInt("audio_duty", DEFAULT_AUDIO_DUTY);
   max_time = preferences.getInt("max_time", DEFAULT_MAX_TIME);
   Serial.println("Preferences loaded");
-
+  
+  setupPulse();
   setupScreen();
   setupButtons();
   statusDisplay();

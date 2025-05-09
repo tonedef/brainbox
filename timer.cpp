@@ -3,8 +3,6 @@
 #include "timer.h"
 #include "buttons.h"
 
-//max_time =  preferences.getInt("max_time", DEFAULT_MAX_TIME);
-
 void ellapsedTime(String &minSec) {
   unsigned long ellapsedMillis = playing ? (max_time - (millis() - startTime)) / 1000 : max_time / 1000;
   int minutes = ellapsedMillis / 60;

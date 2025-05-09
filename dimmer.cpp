@@ -3,8 +3,8 @@
 #include "shared_variables.h"
 #include <Arduino.h>
 
-#define ROTARY_PIN1 9//S2 0//C3
-#define ROTARY_PIN2 37//S2 RX//C3
+#define ROTARY_PIN1 35
+#define ROTARY_PIN2 37
 #define CLICKS_PER_STEP 8
 
 ESPRotary r;
@@ -19,8 +19,13 @@ void dimmerEncSetup() {
 }
 
 void rotate(ESPRotary& r) {
+  Serial.print("is playing: ");
+  Serial.println(playing);
+
   if (playing) {
     led_duty = r.getPosition();
+    Serial.print("LED Duty: ");
+    Serial.println(led_duty);
     updateOutputs();
   } else {
     r.resetPosition(led_duty);

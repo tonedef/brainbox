@@ -4,7 +4,14 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include "PreferencesManager.h"
-#include "shared_variables.h"
+
+// Declare global variables
+/*extern Preferences preferences;
+extern int led_frequency;
+extern int led_duty;
+extern int audio_frequency;
+extern int audio_duty;
+extern int MAX_TIME;*/
 
 // Function declarations
 void handleRoot();
