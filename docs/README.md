@@ -1,5 +1,5 @@
-# Disclaimer
-Please note! I am not a physcian, nor promising that this device will achieve  positive results of any kind, nor promising that it will do no harm, nor that the device will work exactly as intended. For example, it does use pulsing light/sound which may or may not adversely affect people with epilepsy or other neurological conditions. *Anyone* choosing to build or use this device in part or in full, should consult with their physician first. Anyone who builds or uses this device or utilizes any information presented here, agrees to assume *all* risks and responsibilities. DISCUSS ALL MEDICAL ISUES WITH YOUR PHYSICIAN FIRST
+# Important Notice
+I am not a physician and make no guarantees about this device's effectiveness, safety, or intended function. It uses pulsing light and sound, which may pose risks for individuals with epilepsy or other neurological conditions. Anyone choosing to build or use this device, in whole or in part, should consult their physician beforehand. By engaging with this device or any related information, you accept full responsibility for all risks. Always discuss medical concerns with your doctor first.
 
 # What is Memini?
 Memini is a simple device that produces 40Hz audio and light pulses designed to delay and slow the progression of Alzheimer's/dementia. It's based on promising research done at MIT: 
