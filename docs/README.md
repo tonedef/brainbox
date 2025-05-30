@@ -1,4 +1,4 @@
-# Important Notice
+>[!IMPORTANT]
 I am not a physician and make no guarantees about this device's effectiveness, safety, or intended function. It uses pulsing light and sound, which may pose risks for individuals with epilepsy or other neurological conditions. Anyone choosing to build or use this device, in whole or in part, should consult their physician beforehand. By engaging with this device or any related information, you accept full responsibility for all risks. Always discuss medical concerns with your doctor first.
 
 # What is Memini?
@@ -16,25 +16,28 @@ The MCU being used is a Wemos S2 mini board. While you can use a Wemos C3, or an
 It's designed using pre-built dev boards and a few through-hole components to make it easy for hobbyists to make. The most challanging thing to build will be the housing, but really anything box like can be used for that.
 
 # Getting started
-Aquire the components.
 
 ## Electronic component BOM
+Get all the necessary components for the electronics. You don't have to get the exact brand I've listed, but the values, and footprint of the component is important. I've made a few of these with generic no-name encoders and pots for example. The 0.96" I2C displays all seem to have slight variations in hole/pin placements, which I've tried to account for in the PCB's mounting and through-hole pads.
 
-- 1x PCB board. Send the grb_v_x_x.zip to your PCB mfg. This is the latest confirmed [build](https://github.com/tonedef/Memini/blob/main/KiCad/40Hz_S2/grb_v_0_3.zip)
+- 1x PCB board. Send the grb_v_x_x.zip to your PCB mfg. This is the latest confirmed [build](https://github.com/tonedef/Memini/blob/main/KiCad/40Hz_S2/grb_v_0_3.zip). Also happy to orchestrate a group buy if folks are interested (minimum order is usually 5)
 - 1x [Wemos S2 mini](https://www.amazon.com/HiLetgo-ESP32-S2FN4R2-ESP32-S2-Type-C-Connect/dp/B0B291LZ99)
-- 1x  N-Channel logic level MOSFET [CSD19531KCS](https://www.digikey.com/en/products/detail/texas-instruments/CSD19531KCS/4437459). If you're using a short LED strip (< 400mm), you can get away with generic MOSFETs, like the ubiquitous [IRF540](https://www.amazon.com/dp/B0CBKGPJML), which I've tried sucessfully.
-- 1x 100 Ohm resistor a [kit](https://www.amazon.com/Resistors-Assortment-Electronic-Components-Experiments/dp/B09SFCF5XY/) is probably the best bet for this if you don't have one already
-- 1x 10k Ohm resistor a [kit](https://www.amazon.com/Resistors-Assortment-Electronic-Components-Experiments/dp/B09SFCF5XY/) is probably the best bet for this if you don't have one already
+- 1x  N-Channel logic level MOSFET like the [CSD19531KCS](https://www.digikey.com/en/products/detail/texas-instruments/CSD19531KCS/4437459). If you're using a short LED strip (< 400mm), you can _probably_ get away with generic MOSFETs, like the ubiquitous [IRF540](https://www.amazon.com/dp/B0CBKGPJML), which I've tried sucessfully.
+- 1x 100 Ohm resistor. A [kit](https://www.amazon.com/dp/B07L851T3V/ref=sspa_dk_detail_0) is probably the best bet for this if you don't have one already
+- 1x 10k Ohm resistor (would be in the kit above)
 - 1x 1n4007 Diode. Again, a [kit](https://www.amazon.com/HiLetgo-100pcs-Schottky-Rectifier-Assorted/dp/B07VHMCJK1/) if you don't have one already
 - 1x 10k Ohm 15mm PCB vertical [potentiometer](https://www.amazon.com/dp/B0DN1DHWLR).
 - 1x 20mm Rotary [encoder](https://www.amazon.com/dp/B07D3DF8TK) (with or without switch). 
 - 1x 0.96in 4 pin [I2C display](https://www.amazon.com/MakerFocus-Display-Communication-SSD1315-Raspberry/dp/B0DR2CMYGM)
 - 1x PAM8302 [audio dev board](https://www.amazon.com/Audio-Development-Tools-Adafruit-Amplifier/dp/B00PY2YSI4)
 - 5V [LED strip](https://www.amazon.com/dp/B0DPKMQNJJ) (pay attention to the Voltage, most are 12V). You can use any color, but I'd recommend a warm white like 3000K.
-- 2x 6×6×9mm [Momentary Tactile Tact Push Button Switches](https://www.amazon.com/dp/B07CGCPGPT?th=1)
-- 1x Small 4 Ohm [speaker](https://www.amazon.com/dp/B0CCP2Q168)
-- 1x [5V power supply](https://www.amazon.com/100-240V-Extension-Replacement-5-5x2-5mm-Security/dp/B0DGFSQS97) walwart
+- 2x 6x6 Momentary tactile buttons
+  - ~3mm or thinner faceplate: 9mm height [buttons with caps](https://www.amazon.com/TWTADE-6%C3%976%C3%979mm-Tactile-Button-Switch/dp/B07CGCPGPT) is the bare minimum
+  - Greater than 3mm, or just for a "chunkier" button: 12mm [buttons](https://www.amazon.com/uxcell-6x6x12mm-Momentary-Tactile-Button/dp/B07JLV6WSF/) and [caps](https://www.amazon.com/Tactile-Button-Plastic-Replacement-Breadboard/dp/B0B52B8S63)
+- 1x Small 4 Ohm [speaker](https://www.amazon.com/dp/B0CCP2Q168) (8ohm should also work)
+- 1x [5V power supply](https://www.amazon.com/100-240V-Extension-Replacement-5-5x2-5mm-Security/dp/B0DGFSQS97) walwart. You can also just use the USB-C connector on the Wemos S2 mini, which is great for easy reprogramming, but limits the amperage you can draw on the LED out (only an issue if you need more than ~500mA). 
 - 1x DC [jack](https://www.amazon.com/dp/B07CTCLKPP) that fits your 5V walwart
+
 - 2x M2x6mm standoffs. A [kit](https://www.amazon.com/300pcs-Standoff-Column-Spacer-Assortment/dp/B07B9X1KY6/) is good, if you don't have one already.
 - Assorted 2.54mm male and female [headers](https://www.amazon.com/dp/B0774VBJ3J) (most/all of these should already be included in the components above). You can of course use [JTS-XH](https://www.amazon.com/Taiss-560PCS-Connector-Adapter-Housing/dp/B09ZTWCZ3K) connectors for the power in, LED out, and  audio out, or just wire them directly.
  

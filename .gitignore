@@ -1,4 +1,4 @@
 #ignore editors 
 .vscode/
 KiCad/40Hz_S2/40Hz_S2-backups/
-./**/~*.lck
+**/~*.lck
