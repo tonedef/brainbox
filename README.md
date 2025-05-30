@@ -1,8 +1,8 @@
 # Disclaimer
 Please note! I am not a physcian, nor promising that this device will achieve  positive results of any kind, nor promising that it will do no harm, nor that the device will work exactly as intended. For example, it does use pulsing light/sound which may or may not adversely affect people with epilepsy or other neurological conditions. *Anyone* choosing to build or use this device in part or in full, should consult with their physician first. Anyone who builds or uses this device or utilizes any information presented here, agrees to assume *all* risks and responsibilities. DISCUSS ALL MEDICAL ISUES WITH YOUR PHYSICIAN FIRST
 
-# What is Sound-Light?
-A device that produces 40Hz audio and light pulses designed to delay and slow the progression of Alzheimer's/dementia. It's based on promising research done at MIT: 
+# What is Memini?
+Memini is a simple device that produces 40Hz audio and light pulses designed to delay and slow the progression of Alzheimer's/dementia. It's based on promising research done at MIT: 
 https://news.mit.edu/2022/small-studies-40hz-sensory-stimulation-confirm-safety-suggest-alzheimers-benefits-1213 (again, I cannot ensure that this will happen.  There are ongoing clinic trials for this, and I have no guarantee that the designs here will be able to achieve that)
 
 It's meant to be as simple as possible for anyone to use. A dimmer to control how bright the light is, a volume control for the sound, and a single button to start/stop the device. It also has a web interface accessible thru WiFi, and the code can be upgraded/modified to support all kinds of things such as:
