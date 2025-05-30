@@ -3,17 +3,22 @@ I am not a physician and make no guarantees about this device's effectiveness, s
 
 # What is Memini?
 Memini is a simple device that produces 40Hz audio and light pulses designed to delay and slow the progression of Alzheimer's/dementia. It's based on promising research done at MIT: 
-https://news.mit.edu/2022/small-studies-40hz-sensory-stimulation-confirm-safety-suggest-alzheimers-benefits-1213 (again, I cannot ensure that this will happen.  There are ongoing clinic trials for this, and I have no guarantee that the designs here will be able to achieve that)
+https://news.mit.edu/2022/small-studies-40hz-sensory-stimulation-confirm-safety-suggest-alzheimers-benefits-1213 
 
-It's meant to be as simple as possible for anyone to use. A dimmer to control how bright the light is, a volume control for the sound, and a single button to start/stop the device. It also has a web interface accessible thru WiFi, and the code can be upgraded/modified to support all kinds of things such as:
+Again, I cannot ensure that this will happen. There are ongoing clinic trials for this, so the efficacy is still being evaluated.
+
+<img src="./img/board.jpg" alt="working board" width="400">
+
+It's meant to be as simple as possible for anyone to use. A dimmer to control how bright the light is, a volume control for the sound, and a single button to start/stop the device (though two other buttons, one on the encoder and one on left side exist for expansion or to repurpose this for any number of other uses, like a radio). It also has a web interface accessible thru WiFi, and the code can be upgraded/modified to support all kinds of things such as:
 - making it an alarm clock, so that it runs without user intervention
 - tracking usage
 - playing reminders for other mental activities
 - Repurposing for anything else that could use a couple of buttons and a mono audio output
 
-The MCU being used is a Wemos S2 mini board. While you can use a Wemos C3, or an older D1 (code changes required), the S2 is ideal, as it includes a DAC output which makes it easy to modify the existing on/off square wave audio pulse to support significantly more audio options thru software upgrades.
+The MCU being used is a Wemos S2 mini board. While you can use a Wemos C3, or an older D1 (significant code changes required), the S2 is ideal, as the GPIO pin being used to supply the PWM audio (which here is just a simple square wave), is also the DAC output. This makes it easy to switch over to an 8bit DAC output to support significantly more audio options thru software.
 
 It's designed using pre-built dev boards and a few through-hole components to make it easy for hobbyists to make. The most challanging thing to build will be the housing, but really anything box like can be used for that.
+
 
 # Getting started
 
