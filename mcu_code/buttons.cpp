@@ -4,7 +4,7 @@
 #include "pulse.h"
 #include "timer.h"
 
-#define START_STOP_PIN 33
+#define START_STOP_PIN 35
 #define DEBOUNCE_TIME 50
 #define HOLD_TIME 1000 // 2 seconds
 
@@ -37,10 +37,8 @@ void handleStartStop() {
 
   // Handle hold states
   if (buttonPressed && state == NORMAL && millis() - buttonPressTime >= HOLD_TIME) {
-    if (playing) {
-      playing = false;  // Ensure playing stops when entering configs
-      statusDisplay();  // Update display to "stopped"
-    }
+    playing = false;  // Ensure playing stops when entering configs
+
     configsDisplay();
     buttonPressed = false;
     state = IN_CONFIGS;

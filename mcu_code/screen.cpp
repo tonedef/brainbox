@@ -12,7 +12,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 /* Initialize the screen */
 void setupScreen() {
-  Wire.begin(16, 18);  // Use default ESP32 I2C pins
+  Wire.begin(3, 5);  // Use default ESP32 I2C pins
   if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     for (;;);
   }

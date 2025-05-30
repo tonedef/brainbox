@@ -510,13 +510,13 @@
   },
   "pcbnew": {
     "last_paths": {
-      "gencad": "",
+      "gencad": "40Hz_S2.cad",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "../../images/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "40Hz_S2.step",
       "svg": "G:/My Drive/40Hz/v2/",
       "vrml": ""
     },

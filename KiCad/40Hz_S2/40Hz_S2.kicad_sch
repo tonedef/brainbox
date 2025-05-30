@@ -3322,7 +3322,7 @@
 			)
 			(justify right)
 		)
-		(uuid "b75bf231-f32b-4aa7-8c5a-c43a3d2a1be8")
+		(uuid "c765c6e5-0d26-49c3-89c1-0f4884060ad5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 139.7 118.6156 90)
 			(effects
@@ -4267,7 +4267,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Module:WEMOS_S2_mini"
+		(property "Footprint" "SamacSys_Parts:WEMOS_S2_mini_no_inner_row"
 			(at 186.69 157.48 0)
 			(effects
 				(font

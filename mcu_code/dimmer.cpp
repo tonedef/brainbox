@@ -3,9 +3,9 @@
 #include "shared_variables.h"
 #include <Arduino.h>
 
-#define ROTARY_PIN1 35
-#define ROTARY_PIN2 37
-#define CLICKS_PER_STEP 8
+#define ROTARY_PIN1 11
+#define ROTARY_PIN2 9
+#define CLICKS_PER_STEP 2
 
 ESPRotary r;
 
