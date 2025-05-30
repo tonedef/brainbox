@@ -20,6 +20,7 @@ Aquire the components.
 
 ## Electronic component BOM
 
+- 1x PCB board. Send the grb_v_x_x.zip to your PCB mfg. This is the latest confirmed [build](https://github.com/tonedef/Memini/blob/main/KiCad/40Hz_S2/grb_v_0_3.zip)
 - 1x [Wemos S2 mini](https://www.amazon.com/HiLetgo-ESP32-S2FN4R2-ESP32-S2-Type-C-Connect/dp/B0B291LZ99)
 - 1x  N-Channel logic level MOSFET [CSD19531KCS](https://www.digikey.com/en/products/detail/texas-instruments/CSD19531KCS/4437459). If you're using a short LED strip (< 400mm), you can get away with generic MOSFETs, like the ubiquitous [IRF540](https://www.amazon.com/dp/B0CBKGPJML), which I've tried sucessfully.
 - 1x 100 Ohm resistor a [kit](https://www.amazon.com/Resistors-Assortment-Electronic-Components-Experiments/dp/B09SFCF5XY/) is probably the best bet for this if you don't have one already
