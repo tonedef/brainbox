@@ -37,7 +37,7 @@ Get all the necessary components for the electronics. You don't have to get the 
 - 1x PAM8302 [audio dev board](https://www.amazon.com/Audio-Development-Tools-Adafruit-Amplifier/dp/B00PY2YSI4)
 - 5V [LED strip](https://www.amazon.com/dp/B0DPKMQNJJ) (pay attention to the Voltage, most are 12V). You can use any color, but I'd recommend a warm white like 3000K.
 - 2x 6x6x12 Momentary tactile [buttons](https://www.amazon.com/uxcell-6x6x12mm-Momentary-Tactile-Button/dp/B07JLV6WSF/)
-- 1x Box of (really just need two caps, but, don't usually see sold invididually [caps](https://www.amazon.com/Tactile-Button-Plastic-Replacement-Breadboard/dp/B0B52B8S63)
+- 1x Box of [caps](https://www.amazon.com/Tactile-Button-Plastic-Replacement-Breadboard/dp/B0B52B8S63) (don't need a whole box, but aren't really sold individually usually)
 - 1x Small 4 Ohm [speaker](https://www.amazon.com/dp/B0CCP2Q168) (8ohm should also work)
 - 1x [5V power supply](https://www.amazon.com/100-240V-Extension-Replacement-5-5x2-5mm-Security/dp/B0DGFSQS97) walwart. You can also just use the USB-C connector on the Wemos S2 mini, which is great for easy reprogramming, but limits the amperage you can draw on the LED out (only an issue if you need more than ~500mA). 
 - 1x DC [jack](https://www.amazon.com/dp/B07CTCLKPP) that fits your 5V walwart
