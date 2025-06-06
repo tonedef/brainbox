@@ -1,4 +1,7 @@
 >[!IMPORTANT]
+This is a work in progress. Please don't use as of yet. I'm still working out code bugs and migrating to platform.io among other things. The HW is sound but some component values might need tweaking to get right.
+
+>[!IMPORTANT]
 I am not a physician and make no guarantees about this device's effectiveness, safety, or intended function. It uses pulsing light and sound, which may pose risks for individuals with epilepsy or other neurological conditions. Anyone choosing to build or use this device, in whole or in part, should consult their physician beforehand. By engaging with this device or any related information, you accept full responsibility for all risks. Always discuss medical concerns with your doctor first.
 
 # What is Memini?
