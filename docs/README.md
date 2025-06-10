@@ -1,8 +1,8 @@
 >[!IMPORTANT]
 I am not a physician and make no guarantees about this device's effectiveness, safety, or intended function. It uses pulsing light and sound, which may pose risks for individuals with epilepsy or other neurological conditions. Anyone choosing to build or use this device, in whole or in part, should consult their physician beforehand. By engaging with this device or any related information, you accept full responsibility for all risks. Always discuss medical concerns with your doctor first.
 
-# What is Memini?
-Memini is a simple device that produces 40Hz audio and light pulses designed to delay and slow the progression of Alzheimer's/dementia. It's based on promising research done at MIT: 
+# What is BrainBox?
+BrainBox is a simple device that produces 40Hz audio and light pulses designed to delay and slow the progression of Alzheimer's/dementia. It's based on promising research done at MIT: 
 https://news.mit.edu/2022/small-studies-40hz-sensory-stimulation-confirm-safety-suggest-alzheimers-benefits-1213 
 
 Again, I cannot ensure that this will happen. There are ongoing clinic trials for this, so the efficacy is still being evaluated.
@@ -25,9 +25,9 @@ It's designed using pre-built dev boards and a few through-hole components to ma
 ## Electronic component BOM
 Get all the necessary components for the electronics. You don't have to get the exact brand I've listed, but the values, and footprint of the component is important. I've made a few of these with generic no-name encoders and pots for example. The 0.96" I2C displays all seem to have slight variations in hole/pin placements, which I've tried to account for in the PCB's mounting and through-hole pads.
 
-- 1x PCB board. Send the grb_v_x_x.zip to your PCB mfg. This is the latest confirmed [build](https://github.com/tonedef/Memini/blob/main/KiCad/40Hz_S2/grb_v_0_3.zip). Also happy to orchestrate a group buy if folks are interested (minimum order is usually 5)
+- 1x PCB board. Send the grb_v_x_x.zip to your PCB mfg. This is the latest confirmed [build](https://github.com/tonedef/BrainBox/blob/main/KiCad/40Hz_S2/grb_v_0_3.zip). Also happy to orchestrate a group buy if folks are interested (minimum order is usually 5)
 - 1x [Wemos S2 mini](https://www.amazon.com/HiLetgo-ESP32-S2FN4R2-ESP32-S2-Type-C-Connect/dp/B0B291LZ99)
-- 1x  N-Channel logic level MOSFET like the [CSD19531KCS](https://www.digikey.com/en/products/detail/texas-instruments/CSD19531KCS/4437459). If you're using a short LED strip (< 400mm), you can _probably_ get away with generic MOSFETs, like the ubiquitous [IRF540](https://www.amazon.com/dp/B0CBKGPJML), which I've tried sucessfully.
+- 1x  N-Channel MOSFETs [IRF540](https://www.amazon.com/dp/B0CBKGPJML) .
 - 1x 100 Ohm resistor. A [kit](https://www.amazon.com/dp/B07L851T3V/ref=sspa_dk_detail_0) is probably the best bet for this if you don't have one already
 - 1x 10k Ohm resistor (would be in the kit above)
 - 1x 1n4007 Diode. Again, a [kit](https://www.amazon.com/HiLetgo-100pcs-Schottky-Rectifier-Assorted/dp/B07VHMCJK1/) if you don't have one already

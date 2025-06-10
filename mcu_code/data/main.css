@@ -1,0 +1,276 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 15px;
+  background-color: #f4f4f4;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  display:block;
+  text-align: center;
+}
+
+a.wifi, a.app {
+    margin-bottom: 20px;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #0056b3;
+}
+
+a.wifi svg {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: -2px 0 0 10px;
+  vertical-align: middle;
+}
+
+a.app::after {
+  content: '\2699';
+  display: inline-block;
+  font-size: 24px;
+  line-height: 20px;
+  margin: -2px 0 0 10px;
+  vertical-align: middle;
+  filter: invert(41%) sepia(99%) saturate(7492%) hue-rotate(202deg) brightness(98%) contrast(101%);
+}
+
+a:hover::after {
+  filter: invert(24%) sepia(98%) saturate(7492%) hue-rotate(202deg) brightness(90%) contrast(101%);
+}
+
+h1 {
+  color: #555;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 1.8em;
+}
+
+.section {
+  margin-bottom: 20px;
+  background-color: #eee;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+
+.section h3 {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  margin: 0 0 0 1em;
+  padding: 0;
+  line-height: 1em;
+  color: #777;
+  font-size: 1.1em;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(180deg);
+}
+
+.toggle-section {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-bottom: 20px;
+  gap: 1em;
+  margin: 20px 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 28px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #007bff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.toggle-label {
+  font-size: 1.1em;
+  color: #555;
+}
+
+.form-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #ddd;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  width: 100%;
+  margin: 10px 0 0 0;
+  padding: 0.75em 0;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.button:hover {
+  background-color: darkgreen;
+}
+
+.status-message {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9em;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+.info-section {
+  display: flex;
+  align-items: flex-start;
+  background: #e3f2fd;
+  color: #1565c0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-top: 18px;
+  font-size: 1em;
+  gap: 0.7em;
+}
+
+.info-icon {
+  font-size: 1.4em;
+  line-height: 1;
+  margin-top: 2px;
+  fill: currentColor;
+}
+
+.info-icon {
+}
+
+.info-text {
+  flex: 1;
+}
+
+#pageOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  pointer-events: all;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+}
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #007bff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}

@@ -1,4 +1,4 @@
-25628707917286472
+25633953840577693
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -93744,6 +93744,13 @@ rotary encoder illuminated switch vertical
 9
 8
 SamacSys_Parts
+0.96 80x160 TFT Display
+
+
+0
+8
+8
+SamacSys_Parts
 3306F1103
 3306F
 Variable Resistor
@@ -93771,6 +93778,13 @@ LED diameter 3.0mm 2 pins
 0
 2
 2
+SamacSys_Parts
+MCL239PURGW
+MCL239PURGW-2
+LED
+0
+3
+3
 SamacSys_Parts
 NE555DR
 D (R-PDSO-G8)
@@ -93848,6 +93862,13 @@ Switch
 0
 4
 4
+SamacSys_Parts
+Untitled
+
+
+0
+0
+0
 SamacSys_Parts
 WEMOS_S2_mini
 32-pin module, https://www.wemos.cc/en/latest/s2/s2_mini.html
