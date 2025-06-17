@@ -1,22 +1,28 @@
+/**
+ * @file timer.h
+ * @brief Manages time-related variables and functions for playback duration and display.
+ */
 #ifndef TIMER_H_
 #define TIMER_H_
-#ifndef TIMER_H
 
-//============ Includes ====================
 #include "arduinoGlue.h"
 
-#define TIMER_H
-
-//#include <Arduino.h>                              		//-- moved to arduinoGlue.h
-#include "PreferencesManager.h"
-
-//============ Added by Convertor ==========
-
-
+/**
+ * @brief Timestamp (millis) when playback was last started.
+ * Defined in mcu_code.cpp.
+ */
 extern unsigned long startTime;
+
+/**
+ * @brief Timestamp (millis) of the last display update during playback.
+ * Defined in mcu_code.cpp.
+ */
 extern unsigned long lastTime;
 
+/**
+ * @brief Formats the current elapsed or remaining time into an "MM:SS" string.
+ * @param minSec Reference to a String object where the formatted time will be stored.
+ */
 void ellapsedTime(String &minSec);
 
-#endif // TIMER_H
 #endif // TIMER_H_

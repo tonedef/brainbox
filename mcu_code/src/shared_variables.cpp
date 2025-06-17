@@ -1,31 +1,31 @@
 #include "shared_variables.h"
 
 // Define default values
-const int DEFAULT_AUDIO_DUTY = 328;
-const int DEFAULT_AUDIO_FREQUENCY = 40;
-const int DEFAULT_LED_DUTY = 50;
-const int DEFAULT_LED_FREQUENCY = 40;
-const char* DEFAULT_AP_SSID = "wavebox";
-const char* DEFAULT_AP_PASSWORD = "djMagicMike";
-const char* DEFAULT_STA_SSID = ""; // Default if not found in preferences
-const char* DEFAULT_STA_PASSWORD = ""; // Default if not found in preferences
-const char* DEFAULT_IP_ADDRESS = "192.168.4.10";
-const int DEFAULT_MAX_TIME = (10 * 60 * 1000); // 10 minutes
-const float VERSION = 0.30;
+const int DEFAULT_AUDIO_DUTY = 328;                 ///< Default duty cycle for audio output.
+const uint32_t DEFAULT_AUDIO_FREQUENCY = 40;        ///< Default frequency for audio output in Hz.
+const int DEFAULT_LED_DUTY = 256;                   ///< Default duty cycle for LED output.
+const uint32_t DEFAULT_LED_FREQUENCY = 40;          ///< Default frequency for LED output in Hz.
+const char* DEFAULT_AP_SSID = "wavebox";            ///< Default SSID when the device is in Access Point mode.
+const char* DEFAULT_AP_PASSWORD = "djMagicMike";    ///< Default password for the Access Point mode.
+const char* DEFAULT_STA_SSID = "";                  ///< Default SSID for Station mode if not found in preferences.
+const char* DEFAULT_STA_PASSWORD = "";              ///< Default password for Station mode if not found in preferences.
+const int DEFAULT_MAX_TIME = (10 * 60 * 1000);      ///< Default maximum session time in milliseconds (10 minutes).
+const float VERSION = 0.30;                         ///< Firmware version number.
 
 // Initialize shared variables with default values
-char wifi_ap_ip[16]; // Buffer to hold IP address string
-int audio_duty = DEFAULT_AUDIO_DUTY;
-int audio_frequency = DEFAULT_AUDIO_FREQUENCY;
-int led_duty = DEFAULT_LED_DUTY;
-int led_frequency = DEFAULT_LED_FREQUENCY;
-int max_time = DEFAULT_MAX_TIME;
-bool playing = false;
-bool display_sleep = false;
-bool show_display = true;
-String LOCAL_STA_SSID;      // Will be loaded from Preferences or use DEFAULT_PREF_STA_SSID
-String LOCAL_STA_PASSWORD;  // Will be loaded from Preferences or use DEFAULT_PREF_STA_PASSWORD
+char wifi_ap_ip[16];                                ///< Buffer to store the IP address when in AP mode.
+int audio_duty = DEFAULT_AUDIO_DUTY;                ///< Current duty cycle for audio output.
+uint32_t audio_frequency = DEFAULT_AUDIO_FREQUENCY; ///< Current frequency for audio output.
+int led_duty = DEFAULT_LED_DUTY;                    ///< Current duty cycle for LED output.
+uint32_t led_frequency = DEFAULT_LED_FREQUENCY;     ///< Current frequency for LED output.
+int max_time = DEFAULT_MAX_TIME;                    ///< Current maximum session time in milliseconds.
+bool playing = false;                               ///< Flag indicating if playback is active.
+bool display_sleep = false;                         ///< Flag indicating if display auto-sleep is enabled.
+bool show_display = true;                           ///< Flag indicating if the display should be active (not asleep).
+String LOCAL_STA_SSID;                              ///< SSID for the current Station mode WiFi connection, loaded from Preferences.
+String LOCAL_STA_PASSWORD;                          ///< Password for the current Station mode WiFi connection, loaded from Preferences.
 
+// Raw bitmap data
 const uint8_t PROGMEM LOGO[] = {
   0x01, 0xfc, 0x00, 0x02, 0x00, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   0x07, 0xfe, 0x00, 0x07, 0x00, 0x1f, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -67,8 +67,13 @@ const uint8_t PROGMEM LOGO[] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x38, 0x00, 0x00
 };
 
-// 'knob', 15x15px
 const uint8_t PROGMEM KNOB[] = {
 	0x07, 0xc0, 0x18, 0x30, 0x20, 0x08, 0x40, 0x04, 0x40, 0x04, 0x83, 0x82, 0x84, 0x42, 0x85, 0x42, 
 	0x84, 0x42, 0x83, 0x82, 0x40, 0x04, 0x50, 0x14, 0x30, 0x18, 0x70, 0x1c, 0x00, 0x00
+};
+
+/// @brief Defines the global instance of named bitmap assets.
+const struct NamedBitmaps bitmaps = {
+    {LOGO, 128, 38}, // .logo
+    {KNOB, 15, 15}   // .knob
 };

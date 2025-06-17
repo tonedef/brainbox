@@ -1,7 +1,10 @@
+/**
+ * @file mcu_code.h
+ * @brief Main header file for the MCU application, includes all other module headers.
+ */
 #ifndef MCU_CODE_H
 #define MCU_CODE_H
 
-//============ Includes ====================
 #include "buttons.h"
 #include "rotary.h"
 #include "PreferencesManager.h"
@@ -10,8 +13,6 @@
 #include "ServerManager.h"
 #include "shared_variables.h"
 #include "timer.h"
-
 #include "arduinoGlue.h"
 
-//============ Added by Convertor ==========
 #endif // MCU_CODE_H

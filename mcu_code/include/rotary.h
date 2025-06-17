@@ -1,23 +1,28 @@
-#ifndef DIMMER_H_
-#define DIMMER_H_
-#ifndef DIMMER_H
+/**
+ * @file rotary.h
+ * @brief Manages rotary encoder input and related actions.
+ */
+#ifndef ROTARY_H_
+#define ROTARY_H_
 
-//============ Includes ====================
 #include "arduinoGlue.h"
-
-#define DIMMER_H
-
 #include "shared_variables.h"
 #include "ESPRotary.h"
 
-//============ Added by Convertor ==========
-
-
+/**
+ * @brief Global instance of the ESPRotary encoder object.
+ */
 extern ESPRotary r;
-extern int led_duty;
 
+/**
+ * @brief Initializes the rotary encoder settings.
+ */
 void rotaryEncSetup();
+
+/**
+ * @brief Callback function invoked when the rotary encoder's state changes.
+ * @param r Reference to the ESPRotary object that triggered the callback.
+ */
 void rotate(ESPRotary& r);
 
-#endif // DIMMER_H
-#endif // DIMMER_H_
+#endif // ROTARY_H_

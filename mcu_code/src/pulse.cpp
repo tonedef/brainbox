@@ -1,7 +1,6 @@
 #include "PreferencesManager.h"
 #include "shared_variables.h"
 #include "pulse.h"
-#include "buttons.h"
 #include <Arduino.h>
 
 #define AUDIO_TIMER LEDC_TIMER_0
@@ -20,14 +19,26 @@
 bool audio_initialized = false;
 bool led_initialized = false;
 
+/**
+ * @brief Sets up the initial pin mode for the audio shutdown control pin.
+ * The audio output is initially disabled (LOW).
+ */
 void setupPulse() {
   pinMode(AUDIO_SD_IO, OUTPUT);
   digitalWrite(AUDIO_SD_IO, LOW);
 }
 
 
-/* Audio and LED Pulse initialization */
-void pulseInit(int pin, int duty, int frequency, ledc_timer_t timer, ledc_channel_t channel, ledc_mode_t mode, ledc_timer_bit_t res) {
+/**
+ * @brief Configures and initializes an LEDC timer and channel for PWM output.
+ * @param pin GPIO pin number for the PWM output.
+ * @param duty Initial duty cycle value (0-8191 for 13-bit resolution).
+ * @param frequency PWM frequency in Hz.
+ * @param timer LEDC timer to use (e.g., LEDC_TIMER_0).
+ * @param channel LEDC channel to use (e.g., LEDC_CHANNEL_0).
+ * @param res Duty cycle resolution (e.g., LEDC_TIMER_13_BIT).
+ */
+void pulseInit(int pin, int duty, uint32_t frequency, ledc_timer_t timer, ledc_channel_t channel, ledc_mode_t mode, ledc_timer_bit_t res) {
   ledc_timer_config_t ledc_timer = {
     .speed_mode = mode,
     .duty_resolution = res,
@@ -49,11 +60,12 @@ void pulseInit(int pin, int duty, int frequency, ledc_timer_t timer, ledc_channe
   ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
 }
 
-/* Toggle the outputs based on the playing state */
+/**
+ * @brief Updates the audio and LED outputs based on the current playback state.
+ * If playing, the outputs are enabled and configured according to current settings.
+ * If not playing, outputs are disabled. Saves LED duty cycle to preferences when stopping playback.
+ */
 void updateOutputs(bool forceInit) {
- /*Serial.println("Playing: " + String(playing));
-  Serial.println("Audio Duty: " + String(audio_duty));
-  Serial.println("LED Duty: " + String(led_duty));*/
   if (playing) {
     if (!audio_initialized || forceInit) {
       pulseInit(AUDIO_OUTPUT_IO, audio_duty, audio_frequency, AUDIO_TIMER, AUDIO_CHANNEL, AUDIO_MODE, AUDIO_DUTY_RES);
@@ -73,10 +85,13 @@ void updateOutputs(bool forceInit) {
     ESP_ERROR_CHECK(ledc_update_duty(LED_MODE, LED_CHANNEL));
     digitalWrite(AUDIO_SD_IO, HIGH);
   } else {
+    // Deactivate outputs.
     digitalWrite(AUDIO_SD_IO, LOW);
 
     if (audio_initialized) {
       ledc_stop(AUDIO_MODE, AUDIO_CHANNEL, 0);
+      // Setting pins to INPUT and LOW when deactivating PWM.
+      // This is done to avoid any residual output or power draw.
       pinMode(AUDIO_OUTPUT_IO, INPUT);
       digitalWrite(AUDIO_OUTPUT_IO, LOW);
       audio_initialized = false;
@@ -86,14 +101,10 @@ void updateOutputs(bool forceInit) {
       pinMode(LED_OUTPUT_IO, INPUT);
       digitalWrite(LED_OUTPUT_IO, LOW);
       led_initialized = false;
-    }/*
-    Serial.print("led_duty: ");
-    Serial.println(led_duty);
-    Serial.print("saved led_duty: ");
-    Serial.println(preferences.getInt("led_duty", LED_DUTY));*/
+    }
 
     // Save the LED duty cycle if it's changed. Do on stop to save on writes
-    if (led_duty != preferences.getInt("led_duty", LED_DUTY)) {
+    if (led_duty != preferences.getInt("led_duty", DEFAULT_LED_DUTY)) {
       Serial.println("Saving!!");
 
       preferences.putInt("led_duty", led_duty);

@@ -21,16 +21,15 @@ bool previouslyPlaying = false;
 /**
  * @brief Displays the application logo and version information on the screen.
  */
-void showLogo() { //
+void showLogo() {
   display.clearDisplay();
-  display.drawBitmap(0, 0, LOGO, 128, 38, WHITE);
+  display.drawBitmap(0, 0, bitmaps.logo.data, bitmaps.logo.width, bitmaps.logo.height, WHITE);
   display.setCursor(94, 54);
   display.setTextSize(1);
   display.setTextColor(WHITE);
   display.print("v");
   display.println(String(VERSION));
 }
-
 
 /**
  * @brief Helper function to print text centered horizontally within a specified range.
@@ -143,7 +142,7 @@ void statusDisplay(bool forceShow) {
  * @brief Displays the main configuration screen (Home page).
  * Shows WiFi status, connection details (AP or STA mode), and IP address.
  */
-void configsHomeDisplay() { //
+void configsHomeDisplay() {
   offset = 0;
   String title = "Configs ";
 
@@ -265,7 +264,7 @@ void timeAdjustDisplay() {
 
   display.setTextSize(4);
   printCentered(String(time), 22, 0, SCREEN_WIDTH);
-  display.drawBitmap(110, 25, KNOB, 15, 15, WHITE);
+  display.drawBitmap(110, 25, bitmaps.knob.data, bitmaps.knob.width, bitmaps.knob.height, WHITE);
   // Draw a small knob icon next to the time.
   display.setTextSize(1);
   printCentered("(minutes)", 56, 0, SCREEN_WIDTH);
@@ -285,7 +284,6 @@ void configsDisplay(ConfigsPage page){
   ipv4 = wifiConnected ? WiFi.localIP() : WiFi.softAPIP();
 
   display.clearDisplay();
-  display.display();
   display.setTextColor(SSD1306_WHITE);
  
   switch (page) {

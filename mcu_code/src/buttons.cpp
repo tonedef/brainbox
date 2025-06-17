@@ -20,7 +20,10 @@ ConfigsPage configPage;
 static unsigned long buttonDownTime = 0; // Time when onOffButton was pressed
 static bool longPress = false;   // Flag to indicate a potential long press on onOffButton
 
-/* Initialize button configurations */
+/**
+ * @brief Initializes button pins, debounce times, and initial display state.
+ * Sets up pull-up resistors for the buttons.
+ */
 void setupButtons() {
   displayState = NORMAL;
 
@@ -34,22 +37,35 @@ void setupButtons() {
   configButton.setDebounceTime(DEBOUNCE_TIME);
 }
 
+/**
+ * @brief Handles the release event of the On/Off button.
+ * Toggles the display's active state (`show_display`).
+ * If display is turned off, playback is stopped and outputs are updated.
+ */
 void handleOnOff() {
   if (onOffButton.isReleased()) {
     displayState = NORMAL;
     playing = false;
     startTime = 0;
-    display.clearDisplay();
-    display.display();
     show_display = !show_display;
+
     if (!show_display) {
+      // Display is now OFF
+      display.clearDisplay(); // Clear the screen
+      display.display();      // Show the blank screen
       updateOutputs();
     } else {
+      // Display is now ON
       statusDisplay(true);
     }
   }
 }
 
+/**
+ * @brief Handles the release event of the Start/Stop button.
+ * Toggles the playback state (`playing`).
+ * Updates `startTime` for playback duration tracking.
+ */
 void handleStartStop() {
   if (startStopButton.isReleased()) {
     displayState = NORMAL;
@@ -67,9 +83,12 @@ void handleStartStop() {
   }
 }
 
+/**
+ * @brief Handles events for the Config button, including short and long presses.
+ * Long press: Toggles between NORMAL and CONFIGS display states.
+ * Short press (in CONFIGS state): Cycles through different configuration pages.
+ */
 void handleConfigs() {
-  // This function handles the LONG PRESS of the OnOff/Config button
-  // to enter a configuration mode. It also handles exiting config mode.
 
   if (configButton.isPressed()) { // Button is currently held down
     if (!longPress) { // Button just went down
@@ -104,8 +123,6 @@ void handleConfigs() {
       displayState = NORMAL;
     }
   } else if (configButton.isReleased() && displayState == CONFIGS) {
-    Serial.print("configPage");
-    Serial.println(configPage);
     switch (configPage) {
       case HOME:
         configPage = WiFi.status() != WL_CONNECTED ? WIFI_SETUP : APP_PAGE;
@@ -114,7 +131,7 @@ void handleConfigs() {
         configPage = APP_PAGE;
         break;
       case APP_PAGE:
-        // TODO: code up encoder changes to update time (change to configPage = TIME_ADJ)
+        // TODO: code up encoder changes to update time (change configPage = TIME_ADJ)
         configPage = HOME;
         break;
       case TIME_ADJ:

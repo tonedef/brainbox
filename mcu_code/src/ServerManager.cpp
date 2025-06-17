@@ -5,14 +5,17 @@
 #include <FS.h>
 #include "screen.h"
 #include <SPIFFS.h>
-#include <WiFi.h> // Ensure WiFi library is included
 #include "timer.h"
 #include <ESPmDNS.h>
 
-// Define global variables
-const int WIFI_CONNECT_TIMEOUT_MS = 15000; // 15 seconds timeout for WiFi connection
+const int WIFI_CONNECT_TIMEOUT_MS = 15000; //< Timeout in milliseconds for attempting to connect to a WiFi network in Station mode.
 WebServer server(80);
 
+/**
+ * @brief Handles requests to the root ("/") URL.
+ * Serves the main control page (index.html) with dynamic content.
+ * Placeholders in the HTML template are replaced with current device settings.
+ */
 void handleRoot() {
   File file = SPIFFS.open("/index.html", "r");
   String template_content = file.readString();
@@ -31,6 +34,11 @@ void handleRoot() {
   server.send(200, "text/html", template_content);
 }
 
+/**
+ * @brief Handles requests to the "/wifi-config" URL.
+ * Serves the WiFi configuration page (wifi_config.html).
+ * Displays the currently configured STA SSID.
+ */
 void handleWifiConfig() {
   File file = SPIFFS.open("/wifi_config.html", "r");
   String template_content = file.readString();
@@ -43,6 +51,10 @@ void handleWifiConfig() {
   server.send(200, "text/html", template_content);
 }
 
+/**
+ * @brief Handles POST requests to the "/update" URL to update device settings.
+ * Reads parameters from the request, updates corresponding global variables, and saves them to Preferences.
+ */
 void handleUpdate() {
   if (server.hasArg("ledFreq")) {
     led_frequency = server.arg("ledFreq").toInt();
@@ -51,7 +63,6 @@ void handleUpdate() {
   }
 
   if (server.hasArg("ledDuty")) {
-    // Corrected integer division: multiply first, then divide.
     led_duty = (server.arg("ledDuty").toInt() * 8191) / 100; 
     preferences.putInt("led_duty", led_duty);
     Serial.printf("Saved led_duty: %d (from %s%%)\n", led_duty, server.arg("ledDuty").c_str());
@@ -64,7 +75,6 @@ void handleUpdate() {
   }
 
   if (server.hasArg("audioDuty")) {
-    // Corrected integer division: multiply first, then divide.
     audio_duty = (server.arg("audioDuty").toInt() * 8191) / 100; 
     preferences.putInt("audio_duty", audio_duty);
     Serial.printf("Saved audio_duty: %d (from %s%%)\n", audio_duty, server.arg("audioDuty").c_str());
@@ -103,17 +113,15 @@ void handleUpdate() {
   server.send(200, "text/plain", "Values updated");
 }
 
+/**
+ * @brief Handles POST requests to the "/update-wifi" URL to update WiFi credentials.
+ * Validates SSID and password, saves them to Preferences, and reboots the device to apply changes.
+ */
 void handleUpdateWifi() {
   bool updated = false;
 
   bool hasValidSsid = server.hasArg("staSsid") && server.arg("staSsid").length() > 1;
   bool hasValidPwd = server.hasArg("staPassword") && server.arg("staPassword").length() > 7;
-
-    Serial.print("PWD: ");
-    Serial.println(server.arg("staPassword"));
-
-    Serial.print("SSID: ");
-    Serial.println(server.arg("staSsid"));
 
   if (hasValidSsid && hasValidPwd) {
     String receivedSsid = server.arg("staSsid");
@@ -144,6 +152,10 @@ void handleUpdateWifi() {
   }
 }
 
+/**
+ * @brief Handles requests for the main CSS file ("/main.css").
+ * Serves the content of main.css from SPIFFS.
+ */
 void handleCss() {
   File file = SPIFFS.open("/main.css", "r");
   String css_content = file.readString();
@@ -151,6 +163,10 @@ void handleCss() {
   server.send(200, "text/css", css_content);
 }
 
+/**
+ * @brief Handles requests for the main JavaScript file ("/main.js").
+ * Serves the content of main.js from SPIFFS.
+ */
 void handleJs() {
   File file = SPIFFS.open("/main.js", "r");
   String js_content = file.readString();
@@ -158,19 +174,23 @@ void handleJs() {
   server.send(200, "application/javascript", js_content);
 }
 
+/**
+ * @brief Sets up the web server, including SPIFFS, WiFi connection, and route handlers.
+ * Attempts to connect to a configured WiFi network (STA mode).
+ * If STA connection fails or is not configured, it starts an Access Point (AP mode).
+ * Initializes mDNS for service discovery.
+ */
 void setupWebServer() {
-  // Initialize SPIFFS
+  // Initialize SPIFFS. true = format SPIFFS if mount failed.
   if(!SPIFFS.begin(true)){ // true = format SPIFFS if mount failed
     Serial.println("An Error has occurred while mounting SPIFFS");
     return;
-  } else {
-    Serial.println("SPIFFS mounted successfully.");
   }
 
   Serial.println("Attempting to connect to local WiFi...");
   WiFi.mode(WIFI_STA);
   WiFi.setHostname("wavebox");
-  // Only attempt to connect if SSID is configured
+  // Only attempt to connect if STA SSID is configured in preferences
   if (LOCAL_STA_SSID.length() > 0) {
     WiFi.begin(LOCAL_STA_SSID.c_str(), LOCAL_STA_PASSWORD.c_str());
   } else {
@@ -179,6 +199,7 @@ void setupWebServer() {
 
   unsigned long startAttemptTime = millis();
   int step = 0;
+  // Wait for WiFi connection or timeout
   while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < WIFI_CONNECT_TIMEOUT_MS) {
     int loadingSteps = 50; //loadingDisplay has a 10ms delay 50x10ms = 500
     Serial.print(".");
@@ -187,17 +208,15 @@ void setupWebServer() {
     }
     
   }
-  Serial.println();
   
   if (WiFi.status() == WL_CONNECTED) {
     Serial.println("Connected to WiFi!");
     Serial.print("IP Address: ");
     Serial.println(WiFi.localIP());
-    MDNS.begin("wavebox");
+    MDNS.begin("wavebox"); // Start mDNS responder for wavebox.local
   } else {
     Serial.println("Failed to connect to local WiFi. Starting Access Point mode.");
     WiFi.mode(WIFI_AP); // Fallback to AP mode
-    // Use DEFAULT_AP_SSID and DEFAULT_AP_PASSWORD from shared_variables.h
     if (WiFi.softAP(DEFAULT_AP_SSID, DEFAULT_AP_PASSWORD)) {
       Serial.println("SoftAP started successfully with SSID: " + String(DEFAULT_AP_SSID));
       WiFi.setTxPower(WIFI_POWER_13dBm); // Set TX power for AP mode
@@ -207,8 +226,8 @@ void setupWebServer() {
       wifi_ap_ip[sizeof(wifi_ap_ip) - 1] = '\0'; // Ensure null-termination
       Serial.println("Stored SoftAP IP in wifi_ap_ip: " + String(wifi_ap_ip));
     } else {
-      Serial.println("Error: SoftAP failed to start. ESP32 may use a default SSID.");
-      // Handle AP start failure if necessary, though it's rare
+      Serial.println("Error: SoftAP failed to start.");
+      // If we fail, it's fine. The device still works, just with fewer features
     }
   }
   
@@ -218,18 +237,16 @@ void setupWebServer() {
   server.on("/wifi-config", handleWifiConfig);
   server.on("/update", handleUpdate);
   server.on("/update-wifi", handleUpdateWifi);
-  server.begin();
-  Serial.println("Server started");
   server.on("/main.css", handleCss);
   server.on("/main.js", handleJs);
-  
-
-  // Display IP on screen if possible (optional, depends on screen capabilities and space)
-  // Example:
-  // if (WiFi.status() == WL_CONNECTED) updateScreenWithIP(WiFi.localIP().toString());
-  // else updateScreenWithIP(WiFi.softAPIP().toString());
+  server.begin(); // Start the server
+  Serial.println("HTTP server started");
 }
 
+/**
+ * @brief Handles incoming client requests to the web server.
+ * This should be called in the main loop to process web traffic.
+ */
 void handleClient() {
   server.handleClient();
 }

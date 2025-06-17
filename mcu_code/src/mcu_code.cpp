@@ -1,4 +1,3 @@
-//#include <Arduino.h>                              		//-- moved to arduinoGlue.h
 #include "mcu_code.h"
 #include "PreferencesManager.h"
 #include "shared_variables.h"
@@ -9,17 +8,23 @@
 #include "timer.h"
 #include "ServerManager.h"
 
-Preferences preferences; // Define the Preferences instance
+/**
+ * @brief Global instance for accessing ESP32 Non-Volatile Storage (NVS).
+ */
+Preferences preferences;
 
-unsigned long startTime;
-unsigned long lastTime = 0; // Declare lastTime in the global scope
+unsigned long startTime;      ///< Timestamp (millis) when playback was last started.
+unsigned long lastTime = 0;   ///< Timestamp (millis) of the last display update during playback.
 
-/* Initial setup function */
+/**
+ * @brief Main setup function, called once after power-on or reset.
+ * Initializes serial communication, preferences, peripherals, UI, and web server.
+ */
 void setup() {
   Serial.begin(115200);
-  delay(1000); // Wait 1 second
-  Serial.println("\n\n--- ESP32 BOOTING ---"); // Very first message
-  Serial.flush(); // Ensure it's sent
+  delay(1000);
+  Serial.println("\n\n--- ESP32 BOOTING ---");
+  Serial.flush();
   
   // Initialize preferences
   Serial.println("Initializing preferences...");
@@ -39,7 +44,6 @@ void setup() {
   LOCAL_STA_SSID = preferences.getString("sta_ssid", DEFAULT_STA_SSID);
   Serial.print("Loaded STA SSID from Preferences: '"); Serial.print(LOCAL_STA_SSID); Serial.println("'");
   LOCAL_STA_PASSWORD = preferences.getString("sta_pass", DEFAULT_STA_PASSWORD);
-  // Serial.print("Loaded STA Password from Preferences: '"); Serial.print(LOCAL_STA_PASSWORD); Serial.println("'"); // Be cautious logging passwords
 
   Serial.println("Preferences loaded");
   
@@ -51,7 +55,10 @@ void setup() {
   setupWebServer();
 }
 
-/* Main loop function */
+/**
+ * @brief Main loop function, called repeatedly.
+ * Handles button/rotary events, manages playback state, updates display, and services web client requests.
+ */
 void loop() {
   startStopButton.loop();
   onOffButton.loop();
@@ -65,8 +72,9 @@ void loop() {
     if ((millis() - lastTime) > 900) {
       int timeRemaining = max_time - (millis() - startTime);
 
-      // Cleanup after we're done playing (guard against overflow condition as well)
-      if (timeRemaining < 0 || timeRemaining > 90000000) {
+      // Stop playback if time has expired or if timeRemaining is unexpectedly large
+      // (e.g., due to millis() wrap-around or incorrect startTime).
+      if (timeRemaining < 0 || timeRemaining > 90000000) { 
         playing = false;
         delay(1000);
         updateOutputs();
