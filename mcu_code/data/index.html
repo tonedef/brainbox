@@ -5,13 +5,13 @@
   <title>Wavebox Settings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="main.css">
-  <script src="/main.js"></script>
+  <script src="main.js"></script>
 </head>
 
 <body>
   <div class="container">
     <h1>Wavebox Settings</h1>
-    <a class="wifi overlay-link" href="wifi-config">Configure WiFi settings
+    <a class="menu wifi-{{WIFI_CONNECTED}} overlay-link" href="wifi-config" onclickr="document.getElementById('pageOverlaye').style.display = 'flex'">Configure WiFi settings
       <svg fill="none" height="100%" width="100%" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 365.892 365.892" xml:space="preserve">
         <g>
           <circle cx="182.945" cy="286.681" r="41.494" fill="currentColor"/>
@@ -61,7 +61,14 @@
       </div>
     </div>
     <div class="toggle-section">
-      <span id="toggleLabel" class="toggle-label">Play</span>
+      <span class="toggle-label">Turn off after playing</span>
+      <label class="switch">
+        <input type="checkbox" id="displaySleep" {{DISPLAY_SLEEP}}>
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="toggle-section">
+      <span class="toggle-label">Play</span>
       <label class="switch">
         <input type="checkbox" id="playing" {{PLAYING}}>
         <span class="slider"></span>
@@ -80,6 +87,7 @@
         '&ledDuty=' + document.getElementById('ledDuty').value +
         '&audioFreq=' + document.getElementById('audioFreq').value +
         '&audioDuty=' + document.getElementById('audioDuty').value +
+        '&displaySleep=' + document.getElementById('displaySleep').checked +
         '&playing=' + document.getElementById('playing').checked +
         '&maxTime=' + document.getElementById('maxTime').value;
       var xhr = new XMLHttpRequest();
@@ -101,11 +109,6 @@
       xhr.send();
       statusDiv.textContent = 'Updating...';
       statusDiv.className = 'status-message';
-    }
-
-    function toggleNetworkSection() {
-      var section = document.getElementById('networkSection');
-      section.classList.toggle('expanded');
     }
   </script>
 </body>

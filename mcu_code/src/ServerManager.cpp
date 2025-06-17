@@ -13,38 +13,20 @@
 const int WIFI_CONNECT_TIMEOUT_MS = 15000; // 15 seconds timeout for WiFi connection
 WebServer server(80);
 
-// Simple template processor
-String processor(const String& var) {
-  if (var == "LED_FREQ") {
-    return String(led_frequency);
-  } else if (var == "LED_DUTY") {
-    return String(100 * led_duty/8191); // Convert to percentage for display
-  } else if (var == "AUDIO_FREQ") {
-    return String(audio_frequency);
-  } else if (var == "AUDIO_DUTY") {
-    return String(100 * audio_duty/8191); // Convert to percentage for display
-  } else if (var == "MAX_TIME") {
-    return String(max_time/60000); // Convert ms to minutes for display
-  } else if (var == "STA_SSID") {
-    return LOCAL_STA_SSID;
-  } else if (var == "STA_PASSWORD") {
-    return LOCAL_STA_PASSWORD.length() > 0 ? "(hidden)" : "";
-  }
-  return String();
-}
-
 void handleRoot() {
   File file = SPIFFS.open("/index.html", "r");
   String template_content = file.readString();
   file.close(); // Close file as soon as content is read
 
   // Replace placeholders
-  template_content.replace("{{LED_FREQ}}", processor("LED_FREQ"));
-  template_content.replace("{{LED_DUTY}}", processor("LED_DUTY"));
-  template_content.replace("{{AUDIO_FREQ}}", processor("AUDIO_FREQ"));
-  template_content.replace("{{AUDIO_DUTY}}", processor("AUDIO_DUTY"));
-  template_content.replace("{{MAX_TIME}}", processor("MAX_TIME"));
+  template_content.replace("{{LED_FREQ}}", String(led_frequency));
+  template_content.replace("{{LED_DUTY}}", String(100 * led_duty/8191));
+  template_content.replace("{{AUDIO_FREQ}}", String(audio_frequency));
+  template_content.replace("{{AUDIO_DUTY}}", String(100 * audio_duty/8191));
+  template_content.replace("{{MAX_TIME}}", String(max_time/60000));
+  template_content.replace("{{DISPLAY_SLEEP}}", display_sleep ? "checked" : "");
   template_content.replace("{{PLAYING}}", playing ? "checked" : "");
+  template_content.replace("{{WIFI_CONNECTED}}", WiFi.status() == WL_CONNECTED ? "connected" : "disconnected");
 
   server.send(200, "text/html", template_content);
 }
@@ -55,8 +37,8 @@ void handleWifiConfig() {
   file.close(); // Close file as soon as content is read
 
   // Replace placeholders
-  template_content.replace("{{STA_SSID}}", processor("STA_SSID"));
-  template_content.replace("{{HAS_PASSWORD}}", processor("STA_PASSWORD"));
+  template_content.replace("{{STA_SSID}}", LOCAL_STA_SSID);
+  template_content.replace("{{HAS_PASSWORD}}", LOCAL_STA_PASSWORD.length() > 0 ? "(hidden)" : "");
 
   server.send(200, "text/html", template_content);
 }
@@ -94,21 +76,26 @@ void handleUpdate() {
     Serial.printf("Saved max_time: %d\n", max_time);
   }
 
+  if (server.hasArg("displaySleep")) {
+    display_sleep = server.arg("displaySleep") == "true";
+    preferences.putBool("display_sleep", display_sleep);
+    Serial.printf("Saved display_sleep: %s\n", display_sleep ? "true" : "false");
+  }
+
   if (server.hasArg("playing")) {
-    bool setPlaying = server.arg("playing") == "true";
-    if (setPlaying != playing) {
-      playing = setPlaying;
+    bool newPlayingState = server.arg("playing") == "true";
+    if (newPlayingState != playing) { // If the state is actually changing
+      playing = newPlayingState;      // Update the global playing state
+      Serial.printf("Playing state updated: %s\n", playing ? "true" : "false");
       if (playing) {
-        startTime = millis(); // Reset start time when starting playback
-        Serial.println("Playback started");
+        startTime = millis(); // Reset start time only when starting playback
+        Serial.println("Playback started by server.");
       } else {
-        Serial.println("Playback stopped");
+        Serial.println("Playback stopped by server.");
       }
     }
-    playing = false; // Default to false
-    playing = server.arg("playing") == "true";
-    Serial.printf("Playing: %d\n", playing);
   }
+
   
   // After updating variables, refresh outputs and display
   updateOutputs(true);
@@ -119,8 +106,8 @@ void handleUpdate() {
 void handleUpdateWifi() {
   bool updated = false;
 
-  bool hasValidInputs = server.hasArg("staSsid") && server.arg("staSsid").length() > 1 &&
-    server.hasArg("staPassword") && server.arg("staPassword").length() > 7;
+  bool hasValidSsid = server.hasArg("staSsid") && server.arg("staSsid").length() > 1;
+  bool hasValidPwd = server.hasArg("staPassword") && server.arg("staPassword").length() > 7;
 
     Serial.print("PWD: ");
     Serial.println(server.arg("staPassword"));
@@ -128,17 +115,28 @@ void handleUpdateWifi() {
     Serial.print("SSID: ");
     Serial.println(server.arg("staSsid"));
 
-  if (hasValidInputs) {
+  if (hasValidSsid && hasValidPwd) {
     String receivedSsid = server.arg("staSsid");
     LOCAL_STA_SSID = receivedSsid;
     preferences.putString("sta_ssid", LOCAL_STA_SSID);
  
     LOCAL_STA_PASSWORD = server.arg("staPassword");
     preferences.putString("sta_pass", LOCAL_STA_PASSWORD);
+    server.send(200, "text/plain", "WiFi settings updated. Rebooting ...");
     updated = true;
+  } else {
+    String errorMsg;
+    if (!hasValidSsid) {
+      errorMsg = "SSID must be at least 2 characters long. ";
+    }
+
+    if (!hasValidPwd) {
+      errorMsg += "Password must be at least 8 characters long.";
+    }
+
+    server.send(400, "text/plain", errorMsg);
   }
   
-  server.send(200, "text/plain", updated ? "WiFi settings updated. Rebooting ..." : "Must have both SSID and password to update WiFi settings.");
   
   if (updated) {
     delay(500); // Allow time for response to be sent
@@ -180,9 +178,14 @@ void setupWebServer() {
   }
 
   unsigned long startAttemptTime = millis();
+  int step = 0;
   while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < WIFI_CONNECT_TIMEOUT_MS) {
+    int loadingSteps = 50; //loadingDisplay has a 10ms delay 50x10ms = 500
     Serial.print(".");
-    delay(500);
+    while (--loadingSteps >= 0) {
+      loadingDisplay(++step);
+    }
+    
   }
   Serial.println();
   
@@ -190,15 +193,7 @@ void setupWebServer() {
     Serial.println("Connected to WiFi!");
     Serial.print("IP Address: ");
     Serial.println(WiFi.localIP());
-    // Initialize mDNS
-    if (!MDNS.begin("wavebox")) { 
-      Serial.println("Error setting up MDNS responder!");
-      while(1) {
-        delay(1000);
-      }
-    }
-    Serial.println("mDNS responder started");
-
+    MDNS.begin("wavebox");
   } else {
     Serial.println("Failed to connect to local WiFi. Starting Access Point mode.");
     WiFi.mode(WIFI_AP); // Fallback to AP mode
@@ -211,12 +206,13 @@ void setupWebServer() {
       strncpy(wifi_ap_ip, WiFi.softAPIP().toString().c_str(), sizeof(wifi_ap_ip) - 1);
       wifi_ap_ip[sizeof(wifi_ap_ip) - 1] = '\0'; // Ensure null-termination
       Serial.println("Stored SoftAP IP in wifi_ap_ip: " + String(wifi_ap_ip));
-      statusDisplay();
     } else {
       Serial.println("Error: SoftAP failed to start. ESP32 may use a default SSID.");
       // Handle AP start failure if necessary, though it's rare
     }
   }
+  
+  statusDisplay();
 
   server.on("/", handleRoot);
   server.on("/wifi-config", handleWifiConfig);

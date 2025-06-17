@@ -16,9 +16,8 @@ unsigned long lastTime = 0; // Declare lastTime in the global scope
 
 /* Initial setup function */
 void setup() {
-  // Add a small delay to allow serial monitor to connect
-  delay(1000); // Wait 1 second
   Serial.begin(115200);
+  delay(1000); // Wait 1 second
   Serial.println("\n\n--- ESP32 BOOTING ---"); // Very first message
   Serial.flush(); // Ensure it's sent
   
@@ -35,7 +34,7 @@ void setup() {
   audio_frequency = preferences.getInt("audio_frequency", DEFAULT_AUDIO_FREQUENCY);
   audio_duty = preferences.getInt("audio_duty", DEFAULT_AUDIO_DUTY);
   max_time = preferences.getInt("max_time", DEFAULT_MAX_TIME);
-  display_sleep = preferences.getInt("display_sleep", false);
+  display_sleep = preferences.getBool("display_sleep", false);
   
   LOCAL_STA_SSID = preferences.getString("sta_ssid", DEFAULT_STA_SSID);
   Serial.print("Loaded STA SSID from Preferences: '"); Serial.print(LOCAL_STA_SSID); Serial.println("'");
@@ -47,7 +46,7 @@ void setup() {
   setupPulse();
   setupScreen();
   setupButtons();
-  statusDisplay();
+  showLogo();
   rotaryEncSetup();
   setupWebServer();
 }
@@ -56,11 +55,25 @@ void setup() {
 void loop() {
   startStopButton.loop();
   onOffButton.loop();
+  configButton.loop();
   r.loop();
   handleStartStop();
   handleOnOff();
-  if (playing && (millis() - lastTime > 900)) {
-    statusDisplay();
-  }
+  handleConfigs();
+  if (playing) {
+    // For efficiency. Only update if longer than 900ms
+    if ((millis() - lastTime) > 900) {
+      int timeRemaining = max_time - (millis() - startTime);
+
+      // Cleanup after we're done playing (guard against overflow condition as well)
+      if (timeRemaining < 0 || timeRemaining > 90000000) {
+        playing = false;
+        delay(1000);
+        updateOutputs();
+      }
+      statusDisplay();
+    }
+  } 
+
   handleClient();
 }

@@ -51,9 +51,9 @@ void pulseInit(int pin, int duty, int frequency, ledc_timer_t timer, ledc_channe
 
 /* Toggle the outputs based on the playing state */
 void updateOutputs(bool forceInit) {
-  Serial.println("Playing: " + String(playing));
+ /*Serial.println("Playing: " + String(playing));
   Serial.println("Audio Duty: " + String(audio_duty));
-  Serial.println("LED Duty: " + String(led_duty));
+  Serial.println("LED Duty: " + String(led_duty));*/
   if (playing) {
     if (!audio_initialized || forceInit) {
       pulseInit(AUDIO_OUTPUT_IO, audio_duty, audio_frequency, AUDIO_TIMER, AUDIO_CHANNEL, AUDIO_MODE, AUDIO_DUTY_RES);
@@ -86,11 +86,11 @@ void updateOutputs(bool forceInit) {
       pinMode(LED_OUTPUT_IO, INPUT);
       digitalWrite(LED_OUTPUT_IO, LOW);
       led_initialized = false;
-    }
+    }/*
     Serial.print("led_duty: ");
     Serial.println(led_duty);
     Serial.print("saved led_duty: ");
-    Serial.println(preferences.getInt("led_duty", LED_DUTY));
+    Serial.println(preferences.getInt("led_duty", LED_DUTY));*/
 
     // Save the LED duty cycle if it's changed. Do on stop to save on writes
     if (led_duty != preferences.getInt("led_duty", LED_DUTY)) {

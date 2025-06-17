@@ -5,13 +5,13 @@
   <title>Wavebox Settings</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="/main.css">
-  <script src="/main.js"></script>
+  <script src="main.js"></script>
 </head>
 
 <body>
   <div class="container">
     <h1>Wavebox WiFi Settings</h1>
-    <a class="app overlay-link" href="/">Configure app settings</a>
+    <a class="menu overlay-link" href="/" onclick="document.getElementById('pageOverlay').style.display = 'flex'">Configure app settings</a>
     <div class="form-fields">
       <div>
         <label for="staSsid">WiFi Network Name (SSID):</label>
@@ -45,10 +45,10 @@
       var statusDiv = document.getElementById('statusMessage');
       xhr.onload = function () {
         if (xhr.status === 200) {
-          statusDiv.textContent = xhr.responseText; // Show server message
+          statusDiv.textContent = xhr.responseText;
           statusDiv.className = 'status-message success';
         } else {
-          statusDiv.textContent = 'Error updating WiFi settings. Status: ' + xhr.status;
+          statusDiv.textContent = xhr.responseText;
           statusDiv.className = 'status-message error';
         }
       };

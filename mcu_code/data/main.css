@@ -35,7 +35,7 @@ a {
   text-align: center;
 }
 
-a.wifi, a.app {
+a.menu {
     margin-bottom: 20px;
 }
 
@@ -44,13 +44,18 @@ a:hover {
   color: #0056b3;
 }
 
-a.wifi svg {
+a.menu svg {
   display: inline-block;
   width: 20px;
   height: 20px;
-  margin: -2px 0 0 10px;
+  margin-top: -5px;
   vertical-align: middle;
 }
+
+a.wifi-disconnected svg {
+  color: #ddd;
+}
+
 
 a.app::after {
   content: '\2699';

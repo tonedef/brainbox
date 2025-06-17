@@ -10,7 +10,7 @@
 
 #define SHARED_VARIABLES_H
 
-// Declare default values
+// Declare const values
 extern const int DEFAULT_AUDIO_DUTY;
 extern const int DEFAULT_AUDIO_FREQUENCY;
 extern const int DEFAULT_LED_DUTY;
@@ -23,6 +23,9 @@ extern String LOCAL_STA_SSID;        // Current SSID for local WiFi connection (
 extern String LOCAL_STA_PASSWORD;    // Current Password for local WiFi connection (Station mode)
 extern const char* DEFAULT_IP_ADDRESS;
 extern const int DEFAULT_MAX_TIME;
+extern const float VERSION;
+extern const uint8_t PROGMEM LOGO[];
+extern const uint8_t PROGMEM KNOB[];
 
 // Declare shared variables
 extern char wifi_ap_ip[16];
