@@ -6,10 +6,10 @@ const uint32_t DEFAULT_AUDIO_FREQUENCY = 40;        ///< Default frequency for a
 const int DEFAULT_LED_DUTY = 256;                   ///< Default duty cycle for LED output.
 const uint32_t DEFAULT_LED_FREQUENCY = 40;          ///< Default frequency for LED output in Hz.
 const char* DEFAULT_AP_SSID = "wavebox";            ///< Default SSID when the device is in Access Point mode.
-const char* DEFAULT_AP_PASSWORD = "djMagicMike";    ///< Default password for the Access Point mode.
+const char* DEFAULT_AP_PASSWORD = "CHANGE_ME";      ///< Default password for the Access Point mode.
 const char* DEFAULT_STA_SSID = "";                  ///< Default SSID for Station mode if not found in preferences.
 const char* DEFAULT_STA_PASSWORD = "";              ///< Default password for Station mode if not found in preferences.
-const int DEFAULT_MAX_TIME = (10 * 60 * 1000);      ///< Default maximum session time in milliseconds (10 minutes).
+const int DEFAULT_MAX_TIME = (30 * 60 * 1000);      ///< Default maximum session time in milliseconds (30 minutes).
 const float VERSION = 0.30;                         ///< Firmware version number.
 
 // Initialize shared variables with default values
