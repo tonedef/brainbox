@@ -92,20 +92,30 @@ void goingToSleepDisplay() {
  */
 void loadingDisplay(int step) {
   int x_width = 60;
-  int y_height = 20;
+  int y_wave_area_height = 20; // The height of the area dedicated to the sine wave
   int periods = 3;
-  float amplitude = y_height / 2.0f;
-  int y_offset = 42; // vertical offset for display
+  float amplitude = y_wave_area_height / 2.0f;
+  int y_wave_area_start_y = 42; // Y-coordinate where the sine wave drawing area begins (below the logo)
 
   float x_scale = (2 * PI * periods) / x_width; // Scale x-coordinate to fit the desired number of periods within the animation width.
-  float y_center = y_offset + amplitude;        // Calculate the vertical center of the sine wave on the display.
+  float y_wave_center_line = y_wave_area_start_y + amplitude; // Calculate the vertical center for the sine wave oscillation.
 
-  display.clearDisplay();
-  showLogo(); // Redraw logo on each frame to keep it visible during animation.
-  for (int x = 0; x <= x_width; x++) { // Draw the sine wave pixel by pixel
+  display.fillRect(0, y_wave_area_start_y, x_width + 1, y_wave_area_height + 1, SSD1306_BLACK);
+
+  // Initialize previous point for drawing lines
+  int prev_x = 0;
+  float prev_phase = (float)(prev_x + step) * x_scale;
+  int prev_y = (int)(sin(prev_phase) * amplitude + y_wave_center_line);
+
+  // Draw the sine wave by connecting points with lines
+  for (int x = 0; x <= x_width; x++) { 
     float phase = (float)(x + step) * x_scale;
-    int y = (int)(sin(phase) * amplitude + y_center);
-    display.drawPixel(x, y, SSD1306_WHITE);
+    int y = (int)(sin(phase) * amplitude + y_wave_center_line);
+    if (x > 0) { // For points after the first, draw a line from the previous point
+      display.drawLine(prev_x, prev_y, x, y, SSD1306_WHITE);
+    }
+    prev_x = x;
+    prev_y = y;
   }
   display.display();
   delay(10);

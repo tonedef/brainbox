@@ -16,6 +16,9 @@ Preferences preferences;
 unsigned long startTime;      ///< Timestamp (millis) when playback was last started.
 unsigned long lastTime = 0;   ///< Timestamp (millis) of the last display update during playback.
 
+// Conditionally compile setup() and loop() to avoid conflicts with test firmware
+#ifndef UNIT_TEST
+
 /**
  * @brief Main setup function, called once after power-on or reset.
  * Initializes serial communication, preferences, peripherals, UI, and web server.
@@ -76,7 +79,6 @@ void loop() {
       // (e.g., due to millis() wrap-around or incorrect startTime).
       if (timeRemaining < 0 || timeRemaining > 90000000) { 
         playing = false;
-        delay(1000);
         updateOutputs();
       }
       statusDisplay();
@@ -85,3 +87,4 @@ void loop() {
 
   handleClient();
 }
+#endif // UNIT_TEST

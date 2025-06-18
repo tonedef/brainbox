@@ -199,6 +199,7 @@ void setupWebServer() {
 
   unsigned long startAttemptTime = millis();
   int step = 0;
+  showLogo();
   // Wait for WiFi connection or timeout
   while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < WIFI_CONNECT_TIMEOUT_MS) {
     int loadingSteps = 50; //loadingDisplay has a 10ms delay 50x10ms = 500
