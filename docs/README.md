@@ -64,13 +64,35 @@ Get all the necessary components for the electronics. You don't have to get the 
 
   ## hardware (main board)
   - install the female headers for the Wemos board
-  - dry fit the male pins to the audio dev board and the PCB (don't solder just yet)
   - solder the male pins to all the dev boards (Wemos, audio, and display). DON'T solder to any of these to the PCB just yet, but do dry fit them to make sure the pins are properly aligned and adjust if needed.
   - if your using connectors for the power in, audio out, and LED out, solder them now
-  - solder all the remaining components to the PCB except for the display
+  - solder all the remaining components, including the female headers for the Wemos board, to the PCB except for the display
   - attach the standoffs to the display.
   - As the OLED 0.96 displays aren't fully standardized on pin placement and mounting holes, the PCB has generous sized mounting holes and pin pads. Fit the display on the PCB and align it.
   - screw in the display's attached standoffs to the PCB
-  - keeping the display parallel to the PCB, solder the display pins to the PCB
+  - keeping the display parallel to the PCB, solder the display pins to the PCB (they may not protrude all the way thru the board, but that's fine)
  
+ ## hardware (front panel)
+  - any material can be used, but the easiest is a 1/8" thick 4x4" piece of clear cast acrylic.
+  - [SVG and PDF](https://github.com/tonedef/wavebox/tree/main/images) faceplates can either be printed to guide manual cutting or used in CAD for CNC
+  - note: the faceplate has offset mounting as opposed to the corners, so that you're not screwing the faceplate into a 45 joint of the housing, assuming you're making this out of wood with faces cut at a 45 degree bevel
+
+ ## hardware (housing)
+  - 3/4" 4x18" wood board works
+  - cut 4, 4x4 sections at a 45 degree bevel
+  - set a bit or a blade to 3/8" deep and run one side of all four sections about 1/8" in from the edge (this will make a 1/8" inset for your faceplate) 
+  - in the center of one of the 4x4 pieces, cut a hole for the speaker (check the diameter you need for your speaker, it should be about 2")
+  - on the same board as the speaker, cut a small 1/8 hole or so for the LED wires about 1/2 from the top edge in line with the center of the speaker
+  - on the same board as the speaker, at the opposite end of the LED hole, cut a mount hole for your DC plug or a slot for a USB cable (if you plan to inset a bottom face into the box, leave enough room to accomodate your plug/cable)
+  - glue and/or nail all four boards together so they form a box
+  - finish the box however you like
+
  ## hardware (DC jack, LED, and speaker)
+  - leaving the tape on, wrap the LED strip around the top edge of the box and cut the strip at the nearest cut point where the strip doesn't overlap
+  - attach wire leads to the LED strip, the DC jack (if using), and the speaker, make them long enough to attach to the PCB with room to spare so you can connect everything easily
+  - feed the LED leads thru the hole cut for the LED wires
+  - take the tape off the LED strip and tape the strip around the box, then lift up each end of the strip, apply a drop of superglue and press them back down (most tape backings don't hold long term)
+  - attach speaker and DC jack to box
+  - attach leads to the PCB board
+  - attach faceplat to PCB board, and then attach the faceplate to the box
+
